@@ -41,3 +41,24 @@ Nodes on one LAN find each other by UDP broadcast to port 9000. Across networks 
 * DHT is eventually consistent; records expire after 1 hour (no republish).
 * Only task-function exceptions are final; node failures are retried (max 3 attempts), so
   tasks should be idempotent (at-least-once).
+
+
+## Windows quick start
+
+1. Create the environment and install:
+       python -m venv venv
+       venv\Scripts\activate
+       pip install -r requirements.txt
+2. Run the automatic checks (13 checks, about 2 minutes):
+       python tests/e2e.py
+3. Live demo, in three terminals (run `venv\Scripts\activate` in each):
+   - Terminal 1: `python -m meshweaver init --dir cluster` then `python -m meshweaver launch --dir cluster --count 10`
+   - Terminal 2: `python -m meshweaver dashboard --dir cluster`
+   - Terminal 3: `python -m meshweaver submit --dir cluster examples/tasks.py:train_logistic_regression`
+
+### Troubleshooting
+- If Windows Firewall asks, click **Allow access**.
+- If port 9000 is busy, start with `--base-port 9100` and add `--scan-base 9100` to the dashboard and submit commands.
+- Never commit the `cluster` folder. It holds private keys and is already in `.gitignore`.
+
+
